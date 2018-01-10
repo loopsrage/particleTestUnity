@@ -26,16 +26,16 @@ public static class ParticleExten
         main.simulationSpace = ParticleSystemSimulationSpace.World;
         main.gravityModifier = 0f;
         main.startSize = 1f;
-        main.startSpeed = 1f;
+        main.startSpeed = 20f;
         main.startLifetime = 3f ;
     }
     public static void ParticleColorOverLifetimeSettings(this ParticleSystem PS)
     {
         ParticleSystem.ColorOverLifetimeModule colorOverLifetimeModule = PS.colorOverLifetime;
         // ColorOverLifetime Settings
-        colorOverLifetimeModule.enabled = true;
+        colorOverLifetimeModule.enabled = false;
         Gradient G = new Gradient();
-        G.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.red, 0.0f), new GradientColorKey(Color.yellow, 1.0f) },
+        G.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.yellow, 1.0f) },
             new GradientAlphaKey[] { new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) });
         colorOverLifetimeModule.color = new ParticleSystem.MinMaxGradient(G);
     }
@@ -44,7 +44,7 @@ public static class ParticleExten
         ParticleSystem.SizeOverLifetimeModule sizeOverLifetimeModule = PS.sizeOverLifetime;
         // Size over Lifetime Settings
         AnimationCurve animationCurve = new AnimationCurve();
-        animationCurve.AddKey(0f,6f);
+        animationCurve.AddKey(0f,1f);
         animationCurve.AddKey(1f,0f);
         float scalar = 1.0f;
         ParticleSystem.MinMaxCurve Curve = new ParticleSystem.MinMaxCurve(scalar,animationCurve);
@@ -57,10 +57,10 @@ public static class ParticleExten
         // Shape settings
         shapeModule.shapeType = ParticleSystemShapeType.Cone;
         shapeModule.radiusMode = ParticleSystemShapeMultiModeValue.Loop;
-        shapeModule.alignToDirection = false;
-        shapeModule.angle = 90;
+        shapeModule.alignToDirection = true;
+        shapeModule.angle = 0;
         shapeModule.arc = 0;
-        shapeModule.radius = 1;
+        shapeModule.radius = 0;
     }
     public static void ParticleEmissionSettings(this ParticleSystem PS)
     {
@@ -80,10 +80,7 @@ public static class ParticleExten
         emissionModule.SetBursts(
             new ParticleSystem.Burst[]
            {
-                new ParticleSystem.Burst(0.1f, 10),
-                new ParticleSystem.Burst(1.2f, 10),
-                new ParticleSystem.Burst(2.3f, 10),
-                new ParticleSystem.Burst(3.4f, 10)
+                new ParticleSystem.Burst(3.4f, 3)
             }
         );
     }
@@ -92,7 +89,8 @@ public static class ParticleExten
         ParticleSystem.CollisionModule collisionModule = PS.collision;
         // Collision Settings
         collisionModule.enabled = true;
-        collisionModule.colliderForce = 5;
+        collisionModule.colliderForce = 1;
+        collisionModule.radiusScale = 0;
         collisionModule.mode = ParticleSystemCollisionMode.Collision3D;
         collisionModule.quality = ParticleSystemCollisionQuality.High;
         collisionModule.type = ParticleSystemCollisionType.World;
@@ -106,13 +104,46 @@ public static class ParticleExten
         // Trigger Settings
         triggerModule.enabled = false;
     }
+    public static void ParticleRotationSettings(this ParticleSystem PS)
+    {
+        ParticleSystem.RotationOverLifetimeModule rotationOverLifetimeModule = PS.rotationOverLifetime;
+        // Rotation settings
+        rotationOverLifetimeModule.enabled = true;
+    }
     public static void ParticleNoiseSettings(this ParticleSystem PS)
     {
         ParticleSystem.NoiseModule noiseModule = PS.noise;
         // Noise settings
-        noiseModule.enabled = true;
+        noiseModule.enabled = false;
         noiseModule.octaveCount = 1;
         noiseModule.scrollSpeed = 0.1f;
         noiseModule.strength = 1;
+    }
+    public static void ParticleLightSettings(this ParticleSystem PS)
+    {
+        ParticleSystem.LightsModule lightsModule = PS.lights;
+        // Light Settings
+        lightsModule.enabled = true;
+        float scaler = 1.0f;
+        AnimationCurve animationCurve = new AnimationCurve();
+        animationCurve.AddKey(0f,100f);
+        ParticleSystem.MinMaxCurve LightCurve = new ParticleSystem.MinMaxCurve(scaler, animationCurve);
+        lightsModule.light = Resources.Load<Light>("Area Light");
+        lightsModule.intensity = LightCurve;
+
+    }
+    public static void ParticleTrailSettings(this ParticleSystem PS)
+    {
+        ParticleSystem.TrailModule trailModule = PS.trails;
+        // Trail Settings
+        trailModule.enabled = true;
+        trailModule.textureMode = ParticleSystemTrailTextureMode.Stretch;
+    }
+    public static void ParticleSubSettings(this ParticleSystem PS)
+    {
+        ParticleSystem.SubEmittersModule subEmittersModule = PS.subEmitters;
+        // Sub Emitters
+        subEmittersModule.enabled = false;
+        subEmittersModule.AddSubEmitter(new ParticleSystem(), ParticleSystemSubEmitterType.Birth, ParticleSystemSubEmitterProperties.InheritEverything);
     }
 }

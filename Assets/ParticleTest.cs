@@ -9,10 +9,12 @@ public class ParticleTest : MonoBehaviour {
     public ParticleSystem part;
     public List<ParticleCollisionEvent> collisionEvents;
     public Transform Target;
+    public Rigidbody RB;
     void Start () {
 
         gameObject.AddComponent<ParticleSystem>();
         PS = gameObject.GetComponent<ParticleSystem>();
+        RB = GetComponent<Rigidbody>();
         MeshFilter mesh = gameObject.GetComponent<MeshFilter>();
         PS.ParticleRendererSettings(mesh.mesh);
         PS.ParticleColorOverLifetimeSettings();
@@ -22,9 +24,13 @@ public class ParticleTest : MonoBehaviour {
         PS.ParticleSizeOverLifetimeSettings();
         PS.ParticleNoiseSettings();
         PS.ParticleCollisionSettings();
+        PS.ParticleSubSettings();
+        PS.ParticleTrailSettings();
         part = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+        RB.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationZ |
+            RigidbodyConstraints.FreezeRotationX |
+            RigidbodyConstraints.FreezeRotationY;
     }
     private void OnParticleCollision(GameObject other)
     {
@@ -44,8 +50,6 @@ public class ParticleTest : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-        transform.Rotate(Vector3.up, 1000f * Time.deltaTime);
         transform.Rotate(Vector3.right, 1000f * Time.deltaTime);
-        // GetComponent<Rigidbody>().AddForce(Target.position * Time.deltaTime, ForceMode.Impulse);
 	}
 }
