@@ -19,6 +19,36 @@ public static class ParticleExten
         }
         return LayerMask.GetMask(LayerNames);
     }
+    public static void ParticleVelocityOverTimeSettings(this ParticleSystem PS,
+        bool enabled = true,
+        ParticleSystemSimulationSpace space = ParticleSystemSimulationSpace.World,
+        float scalar = 0.0f,
+        AnimationCurve X = null, // Set Externally 
+        AnimationCurve Y = null, // Set Externally 
+        AnimationCurve Z = null // Set Externally 
+        )
+    {
+        // Crashes for some reason
+        //ParticleSystem.VelocityOverLifetimeModule velocityOverLifetimeModule = PS.velocityOverLifetime;
+        //// Velocity Settings
+        //velocityOverLifetimeModule.enabled = enabled;
+        //velocityOverLifetimeModule.space = space;
+        //if (X != null)
+        //{
+        //    ParticleSystem.MinMaxCurve VelocityCurveX = new ParticleSystem.MinMaxCurve(scalar, X);
+        //    velocityOverLifetimeModule.x = VelocityCurveX;
+        //}
+        //if (Y != null)
+        //{
+        //    ParticleSystem.MinMaxCurve VelocityCurveY = new ParticleSystem.MinMaxCurve(scalar, Y);
+        //    velocityOverLifetimeModule.y = VelocityCurveY;
+        //}
+        //if (Z != null)
+        //{
+        //    ParticleSystem.MinMaxCurve VelocityCurveZ = new ParticleSystem.MinMaxCurve(scalar, Z);
+        //    velocityOverLifetimeModule.z = VelocityCurveZ;
+        //}
+    }
     public static void ParticleRendererSettings(this ParticleSystem PS,
         bool enabled = true,
         string Resources_MeshObject = null,
@@ -33,10 +63,19 @@ public static class ParticleExten
         // Renderer Settings
         PR.enabled = enabled;
         // Mesh Options / Material Options
-        GameObject ResourceMesh = (GameObject)LoadResource(Resources_MeshObject);
-        PR.material = (Material)LoadResource(Resources_Material);
-        PR.trailMaterial = (Material)LoadResource(Resources_TrailMaterial);
-        PR.mesh = ResourceMesh.GetComponent<MeshFilter>().sharedMesh;
+        if (Resources_MeshObject != null)
+        {
+            GameObject ResourceMesh = (GameObject)LoadResource(Resources_MeshObject);
+            PR.mesh = ResourceMesh.GetComponent<MeshFilter>().sharedMesh;
+        }
+        if (Resources_Material != null)
+        {
+            PR.material = (Material)LoadResource(Resources_Material);
+        }
+        if (Resources_TrailMaterial != null)
+        {
+            PR.trailMaterial = (Material)LoadResource(Resources_TrailMaterial);
+        }
         // Mode Settings
         PR.renderMode = RenderMode;
         PR.sortMode = SortMode;
@@ -91,6 +130,7 @@ public static class ParticleExten
         ParticleSystem.ShapeModule shapeModule = PS.shape;
         // Shape settings
         shapeModule.shapeType = ShapeType;
+        shapeModule.arcMode = ParticleSystemShapeMultiModeValue.Loop;
         shapeModule.radiusMode = RadiusMode;
         shapeModule.alignToDirection = AlignDirection;
         shapeModule.angle = Angle;
