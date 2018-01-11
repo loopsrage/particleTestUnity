@@ -19,6 +19,18 @@ public static class ParticleExten
         }
         return LayerMask.GetMask(LayerNames);
     }
+    public static void SwitchPower(this ParticleSystem PS)
+    {
+        ParticleSystemRenderer renderer = PS.GetComponent<ParticleSystemRenderer>();
+        if (renderer.enabled)
+        {
+            renderer.enabled = false;
+        }
+        else
+        {
+            renderer.enabled = true;
+        }
+    }
     public static void ParticleVelocityOverTimeSettings(this ParticleSystem PS,
         bool enabled = true,
         ParticleSystemSimulationSpace space = ParticleSystemSimulationSpace.World,
@@ -226,10 +238,18 @@ public static class ParticleExten
         ParticleSystem.LightsModule lightsModule = PS.lights;
         // Light Settings
         lightsModule.enabled = enabled;
-        lightsModule.light = (Light)LoadResource(LightPrefab);
+        GameObject LightObject = (GameObject)LoadResource(LightPrefab);
+        Light light = LightObject.GetComponent<Light>();
+        lightsModule.light = light;
 
         ParticleSystem.MinMaxCurve LightCurve = new ParticleSystem.MinMaxCurve(scalar, animationCurve);
         lightsModule.intensity = LightCurve;
+        lightsModule.range = 100;
+        lightsModule.useRandomDistribution = false;
+        lightsModule.ratio = 1;
+        lightsModule.useParticleColor = false;
+        lightsModule.intensity = 1;
+        lightsModule.maxLights = 3;
 
     }
     public static void ParticleTrailSettings(this ParticleSystem PS,

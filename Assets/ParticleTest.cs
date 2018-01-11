@@ -14,27 +14,7 @@ public class ParticleTest : MonoBehaviour {
         gameObject.AddComponent<ParticleSystem>();
         PS = gameObject.GetComponent<ParticleSystem>();
         RB = GetComponent<Rigidbody>();
-
-        PS.ParticleMainSettings(true, 0, 1f, 150f,1f);
-        AnimationCurve EmissionCurve = new AnimationCurve();
-        AnimationCurve SizeCurve = new AnimationCurve();
-        //AnimationCurve VelocityCurveX = new AnimationCurve();
-        //VelocityCurveX.AddKey(0f,0f);
-        //VelocityCurveX.AddKey(2f,50f);
-        SizeCurve.AddKey(0f,1f);
-        SizeCurve.AddKey(2f,0f);
-        EmissionCurve.AddKey(0f, 70f);
-        PS.ParticleEmissionSettings(true, 1, true, false, null, EmissionCurve);
-        PS.ParticleShapeSettings(true, ParticleSystemShapeType.Cone, ParticleSystemShapeMultiModeValue.Loop, true, 0f, 0f, 0f);
-        PS.ParticleSizeOverLifetimeSettings(true, 1, SizeCurve);
-        PS.ParticleTrailSettings(true,ParticleSystemTrailTextureMode.Stretch);
-        string[] Layers = new string[] { "Players" };
-        PS.ParticleNoiseSettings(true,2,6,2);
-
-        PS.ParticleCollisionSettings(true,0,0f,ParticleSystemCollisionMode.Collision3D,ParticleSystemCollisionQuality.High,
-            ParticleSystemCollisionType.World,true,true,Layers);
-        PS.ParticleRendererSettings(true, "Capsule", "nomat", "ICE",ParticleSystemRenderMode.Mesh);
-        // PS.ParticleVelocityOverTimeSettings(true,ParticleSystemSimulationSpace.World,1,VelocityCurveX); CRASHES!!
+        GameMaster.gameMaster.ParticleSystemSelector.selectParticleEffects(gameObject);
         part = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
         RB.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationZ |
@@ -59,6 +39,14 @@ public class ParticleTest : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-         // transform.Rotate(Vector3.right, 1000f * Time.deltaTime);
+        transform.LookAt(Target.transform);
+        if (Vector3.Distance(Target.position,transform.position) < 10)
+        {
+            PS.SwitchPower();
+        }
+        else
+        {
+            PS.SwitchPower();
+        }
 	}
 }
