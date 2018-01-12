@@ -27,7 +27,7 @@ public class ScriptableParticle : ScriptableObject
                 PS.ParticleSizeOverLifetimeSettings(true, 1, SizeCurve);
 
                 // Shape Settings
-                PS.ParticleShapeSettings(true, ParticleSystemShapeType.Cone, ParticleSystemShapeMultiModeValue.Loop, true, 0f, 0f, 0f);
+                PS.ParticleShapeSettings(true, ParticleSystemShapeType.Cone, ParticleSystemShapeMultiModeValue.Loop, false, 0f, 0f, 0f);
 
                 // Trail Settings
                 PS.ParticleTrailSettings(true, ParticleSystemTrailTextureMode.Stretch, 6, true, false);

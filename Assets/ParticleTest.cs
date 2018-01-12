@@ -8,24 +8,19 @@ public class ParticleTest : MonoBehaviour {
     private ParticleSystem PS;
     public ParticleSystem part;
     public List<ParticleCollisionEvent> collisionEvents;
-    public Transform Target;
     public Rigidbody RB;
     public MoveData.MoveTypes MoveType = MoveData.MoveTypes.Lightning;
     void Start () {
-        // Init Particle Settings
         gameObject.AddComponent<ParticleSystem>();
         PS = gameObject.GetComponent<ParticleSystem>();
-        GameMaster.gameMaster.ParticleSystemSelector.selectParticleEffects(gameObject, MoveType);
-
+        InitPS();
         // Particle Collision
         part = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
 
         // Freeze Rotation and Float
         RB = GetComponent<Rigidbody>();
-        RB.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationZ |
-            RigidbodyConstraints.FreezeRotationX |
-            RigidbodyConstraints.FreezeRotationY;
+        RB.constraints = RigidbodyConstraints.FreezePositionY;
     }
     private void OnParticleCollision(GameObject other)
     {
@@ -43,8 +38,19 @@ public class ParticleTest : MonoBehaviour {
             i++;
         }
     }
+    private void InitPS()
+    {
+        // Init Particle Settings
+        GameMaster.gameMaster.ParticleSystemSelector.selectParticleEffects(gameObject, MoveType);
+    }
     // Update is called once per frame
     void Update () {
-        transform.LookAt(Target.transform);
+        // transform.LookAt(Target.transform);
+        if (MoveType != GetComponentInParent<PlayerHit>().CurrentMove)
+        {
+            PS.Clear();
+            MoveType = GetComponentInParent<PlayerHit>().CurrentMove;
+            InitPS();
+        }
 	}
 }
