@@ -254,12 +254,18 @@ public static class ParticleExten
     }
     public static void ParticleTrailSettings(this ParticleSystem PS,
         bool enabled = true,
-        ParticleSystemTrailTextureMode TrailMode = ParticleSystemTrailTextureMode.Stretch)
+        ParticleSystemTrailTextureMode TrailMode = ParticleSystemTrailTextureMode.Stretch,
+        float TailWidth = 10,
+        bool SizeAffectsWidth = false,
+        bool DieWithParticle = false)
     {
         ParticleSystem.TrailModule trailModule = PS.trails;
         // Trail Settings
         trailModule.enabled = enabled;
         trailModule.textureMode = TrailMode;
+        trailModule.widthOverTrail = TailWidth;
+        trailModule.sizeAffectsWidth = SizeAffectsWidth;
+        trailModule.dieWithParticles = DieWithParticle;
     }
     public static void ParticleSubSettings(this ParticleSystem PS,
         bool enabled = true)

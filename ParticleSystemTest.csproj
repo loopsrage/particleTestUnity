@@ -228,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameMaster.cs" />
+    <Compile Include="Assets\Moves.cs" />
     <Compile Include="Assets\ParticleExtensions.cs" />
     <Compile Include="Assets\ParticleTest.cs" />
     <Compile Include="Assets\PlayerHit.cs" />

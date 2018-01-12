@@ -10,13 +10,19 @@ public class ParticleTest : MonoBehaviour {
     public List<ParticleCollisionEvent> collisionEvents;
     public Transform Target;
     public Rigidbody RB;
+    public MoveData.MoveTypes MoveType = MoveData.MoveTypes.Lightning;
     void Start () {
+        // Init Particle Settings
         gameObject.AddComponent<ParticleSystem>();
         PS = gameObject.GetComponent<ParticleSystem>();
-        RB = GetComponent<Rigidbody>();
-        GameMaster.gameMaster.ParticleSystemSelector.selectParticleEffects(gameObject);
+        GameMaster.gameMaster.ParticleSystemSelector.selectParticleEffects(gameObject, MoveType);
+
+        // Particle Collision
         part = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
+
+        // Freeze Rotation and Float
+        RB = GetComponent<Rigidbody>();
         RB.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationZ |
             RigidbodyConstraints.FreezeRotationX |
             RigidbodyConstraints.FreezeRotationY;
@@ -40,13 +46,5 @@ public class ParticleTest : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         transform.LookAt(Target.transform);
-        if (Vector3.Distance(Target.position,transform.position) < 10)
-        {
-            PS.SwitchPower();
-        }
-        else
-        {
-            PS.SwitchPower();
-        }
 	}
 }
