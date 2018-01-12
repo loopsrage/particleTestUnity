@@ -97,7 +97,8 @@ public static class ParticleExten
         float GravityModifier = 0.0f,
         float StartSize = 0.0f,
         float StartSpeed = 0.0f,
-        float StartLifetime = 0.0f)
+        float StartLifetime = 0.0f,
+        float Delay = 0.0f)
     {
         ParticleSystem.MainModule main = PS.main;
         // Main Settings
@@ -106,6 +107,7 @@ public static class ParticleExten
         main.gravityModifier = GravityModifier;
         main.startSize = StartSize;
         main.startSpeed = StartSpeed;
+        main.startDelay = Delay;
         main.startLifetime = StartLifetime;
     }
     public static void ParticleColorOverLifetimeSettings(this ParticleSystem PS,
@@ -154,7 +156,7 @@ public static class ParticleExten
         float scalar = 0.0f,
         bool RateOverTime = false,
         bool Burst = false,
-        float[][] BurstSettings = null, // Set Externally
+        ParticleSystem.Burst[] BurstSettings = null, // Set Externally
         AnimationCurve animationCurve = null // Set Externally
         )
     {
@@ -168,12 +170,7 @@ public static class ParticleExten
         }
         if (Burst)
         {
-            List<ParticleSystem.Burst> BurstFromArray = new List<ParticleSystem.Burst>();
-            for (int T = 0; T < BurstSettings.Length; T++)
-            {
-                BurstFromArray.Add(new ParticleSystem.Burst(BurstSettings[T][0], BurstSettings[T][1]));
-            }
-            emissionModule.SetBursts(BurstFromArray.ToArray());
+            emissionModule.SetBursts(BurstSettings);
         }
 
     }
@@ -267,12 +264,25 @@ public static class ParticleExten
         trailModule.sizeAffectsWidth = SizeAffectsWidth;
         trailModule.dieWithParticles = DieWithParticle;
     }
+    public static void ParticleInheritVelocity(this ParticleSystem PS,
+        bool enabled = true,
+        ParticleSystemInheritVelocityMode Mode = ParticleSystemInheritVelocityMode.Initial)
+    {
+        ParticleSystem.InheritVelocityModule inheritVelocityModule = PS.inheritVelocity;
+        // Velocity Settings
+        inheritVelocityModule.enabled = enabled;
+        inheritVelocityModule.mode = ParticleSystemInheritVelocityMode.Initial;
+    }
     public static void ParticleSubSettings(this ParticleSystem PS,
-        bool enabled = true)
+        bool enabled = true,
+        GameObject SPSContainer = null // Contains Particle System
+        )
     { // In progress
         ParticleSystem.SubEmittersModule subEmittersModule = PS.subEmitters;
         // Sub Emitters
-        subEmittersModule.enabled = false;
-        subEmittersModule.AddSubEmitter(new ParticleSystem(), ParticleSystemSubEmitterType.Birth, ParticleSystemSubEmitterProperties.InheritEverything);
+        subEmittersModule.enabled = enabled;
+        ParticleSystem SPS = SPSContainer.GetComponent<ParticleSystem>();
+        
+        subEmittersModule.AddSubEmitter(SPS, ParticleSystemSubEmitterType.Birth, ParticleSystemSubEmitterProperties.InheritNothing);
     }
 }

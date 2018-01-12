@@ -9,7 +9,7 @@ public class ParticleTest : MonoBehaviour {
     public ParticleSystem part;
     public List<ParticleCollisionEvent> collisionEvents;
     public Rigidbody RB;
-    public MoveData.MoveTypes MoveType = MoveData.MoveTypes.Lightning;
+    public MoveData.MoveTypes MoveType = MoveData.MoveTypes.Fire;
     void Start () {
         gameObject.AddComponent<ParticleSystem>();
         PS = gameObject.GetComponent<ParticleSystem>();

@@ -17,7 +17,7 @@ public class PlayerHit : MonoBehaviour
     public int MoveSelectionMax;
     void Start()
     {
-        MoveSelectionCount = 0;
+        MoveSelectionCount = MoveSelectionMax -1;
         MoveSelectionMax = MoveSelection.Count;
         CurrentMove = MoveSelection[MoveSelectionCount];
     }
