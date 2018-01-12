@@ -120,9 +120,41 @@ public class ScriptableParticle : ScriptableObject
                 // Rotation Settings:
                 PS.ParticleRotationSettings();
                 break;
-            case MoveData.MoveTypes.Nature:
-                break;
             case MoveData.MoveTypes.Rock:
+                // Main Settings
+                PS.ParticleMainSettings(true, 0, 15f, 100f, 6f);
+
+                // Emission Settings
+                EmissionCurve = new AnimationCurve();
+                EmissionCurve.AddKey(0f, 1f);
+                PS.ParticleEmissionSettings(true, 1, true, false, null, EmissionCurve);
+
+                // Size Settings
+                SizeCurve = new AnimationCurve();
+                SizeCurve.AddKey(0f, 1f);
+                PS.ParticleSizeOverLifetimeSettings(false, 1, SizeCurve);
+
+                // Shape Settings
+                PS.ParticleShapeSettings(true, ParticleSystemShapeType.Cone, ParticleSystemShapeMultiModeValue.Loop, true, 0f, 0f, 0f);
+
+                // Trail Settings
+                PS.ParticleTrailSettings(true, ParticleSystemTrailTextureMode.Stretch, 1, true, false);
+
+                // Collision Settings
+                PS.ParticleCollisionSettings(true, 0, 0f, ParticleSystemCollisionMode.Collision3D, ParticleSystemCollisionQuality.High,
+                    ParticleSystemCollisionType.World, true, true, Layers);
+
+                // Noise Settings
+                PS.ParticleNoiseSettings(true, 0, 0, 0);
+
+                // Light Settings
+                PS.ParticleLightSettings(false, 1, EmissionCurve, "Point light");
+
+                // Renderer settings
+                PS.ParticleRendererSettings(true, "Capsule", "RockMat", "RockTrailMat", ParticleSystemRenderMode.Mesh);
+
+                // Rotation Settings:
+                PS.ParticleRotationSettings();
                 break;
             default:
                 break;

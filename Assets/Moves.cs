@@ -23,7 +23,6 @@ public static class MoveData
         Fire,
         Lightning,
         Ice,
-        Nature,
         Rock
     }
 }
